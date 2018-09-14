@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% extends 'forum/base.html' %}
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+</head>
+{% block forum %}
+    <a href="{% url 'chat:user-list'%}">Go Back</a>
+    <h3>Sender: {{ user }}</h3>
+    <form method="get">
+        {{ user_filtered.form.as_p }}
+        <button type="submit" class="btn btn-danger">Search User</button>
+        <p style="color:red">{{ no_user }}</p>
+    </form>
+    {% if user_filtered.qs %}
+    {% for i in user_filtered.qs %}
+    <form method="post">
+      {% csrf_token %}
+        <input type="text" name="user" value="{{ i.username }}">
+        <button style="margin-left: 40px" type="submit" class="btn btn-danger">Start Conversation</button>
+        <hr>
+    </form>
+    {% endfor %}
+    {% else %}
+      <p style="color:red">No such user</p>
+    {% endif %}
+{% endblock %}

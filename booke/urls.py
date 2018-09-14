@@ -17,10 +17,18 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
+from book_listing import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^booklisting/', include('book_listing.urls')),
+    url(r'^booklisting/', include('book_listing.urls', namespace="books")),
+    url(r'^sign_in/', include('sign_in.urls', namespace="sign_in")),
+    url(r'^login/$', auth_views.login, name='login'),
+    url(r'^logout/$', auth_views.logout, name='logout'),
+    url(r'^forum/', include('forum.urls', namespace="forum")),
+    url(r'^chat/', include('chat.urls', namespace="chat")),
+    url(r'^$', views.index, name="index"),
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+{% extends 'book_listing/base.html' %}
+{% block books %}
+{% if all_books %}
+    {% for book in all_books %}
+        <div class="container">
+            <img src="{{ book.book_image.url }}" style="width:70px;">
+            <ul>
+                <li>Author : {{ book.user }}</li>
+                <li>Title : {{ book.title }}</li>
+                <li>Description : {{ book.description }}</li>
+                <li>Publication : {{ book.publication }}</li>
+                <li>Semester : {{ book.semester }}</li>
+                <li>Subject: {{ book.subject }}</li>
+                {% if book.user == user %}
+                  <a href="{% url 'book_listing:update' book.id %}">
+                      <button>Update Ad</button>
+                  </a>
+                  <a href="{% url 'book_listing:delete' book.id %}">
+                      <button>Delete Ad</button>
+                  </a>
+                {% endif %}
+            </ul>
+        </div>
+    {% endfor %}
+{% else %}
+    <div>
+        No Entries
+    </div>
+{% endif %}
+    <a href="{% url 'books:book-add' %}">
+        <button>Add Book</button>
+    </a>
+{% endblock %}

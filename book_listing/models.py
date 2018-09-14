@@ -2,14 +2,17 @@ from django.db import models
 from django.contrib.auth.models import User
 import pandas as pd
 import csv
+from django.urls import reverse
+from django.utils import timezone
 
 
 class Book_List(models.Model):
-    uploaded_by = models.ForeignKey(User, default=True)
+    user = models.ForeignKey(User)
     title = models.CharField(max_length=50)
-    description = models.TextField(max_length=500)
-    book_image = models.FileField(null=True)
-    author = models.CharField(max_length=250)
+    description = models.TextField(max_length=1000, blank=True)
+    book_image = models.FileField(null=True, blank=True)
+    date_created = models.DateTimeField(default=timezone.now)
+    author = models.CharField(max_length=100, blank=True)
     SEMESTER = (('1', 'Semester 1'),
                 ('2', 'Semester 2'),
                 ('3', 'Semester 3'),
@@ -43,3 +46,9 @@ class Book_List(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse("book_listing:search")
+
+    class Meta():
+        ordering = ['-date_created']
